@@ -11,7 +11,7 @@ from pypacker.pypacker import FIELD_FLAG_AUTOUPDATE, FIELD_FLAG_IS_TYPEFIELD
 from pypacker.structcbs import *
 
 # handler
-from pypacker.layer12 import arp, dtp, pppoe, llc, flow_control, lacp
+from pypacker.layer12 import arp, dtp, pppoe, llc, flow_control, lacp, mpls
 from pypacker.layer3 import ip, ip6, ipx
 from pypacker.layer567 import ptpv2
 
@@ -129,6 +129,7 @@ class Ethernet(pypacker.Packet):
 		ETH_TYPE_EFC: flow_control.FlowControl,
 		ETH_TYPE_LLDP: lldp.LLDP,
 		ETH_TYPE_SP: lacp.LACP,
+		ETH_TYPE_MPLS_UCAST: mpls.MPLS,
 	}
 
 	def _dissect(self, buf):
@@ -154,6 +155,7 @@ class Ethernet(pypacker.Packet):
 				self.vlan.append(vlan_tag)
 				hlen += 4
 				self.type = vlan_tag.type
+
 
 		# avoid calling unpack more than once
 		if hlen == ETH_HDR_LEN:
